@@ -1,9 +1,57 @@
 <script setup lang="ts">
-import leftSidebarMenu from "../components/nav/left-sidebar-menu.vue";
+import Drawer from "../components/nav/drawer.vue";
+import { useDrawer } from "../components/nav/utils/useDrawer";
+
+const { isOpen, toggleDrawer } = useDrawer();
 </script>
 
 <template>
-  <div class="left-nav">
-    <leftSidebarMenu />
+  <div class="container">
+    <button v-if="!isOpen" class="menu-toggle-btn" @click="toggleDrawer">
+      <span class="icon">☰</span>
+    </button>
+
+    <Drawer :isOpen="isOpen" @toggleDrawer="toggleDrawer" />
+
+    <div :class="['content', { 'content-open': isOpen }]">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
+      dignissimos in nulla at voluptates velit quae, voluptas excepturi non
+      dicta et illo, doloremque necessitatibus molestias esse possimus culpa,
+      cumque ullam!
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.content {
+  transition: margin-left 0.5s ease;
+  flex-grow: 1;
+
+  padding-left: 60px;
+}
+
+.content-open {
+  margin-left: 200px;
+}
+
+.menu-toggle-btn {
+  position: absolute;
+
+  padding: 10px 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.menu-toggle-btn:hover {
+  background-color: #2c68c1;
+}
+</style>
