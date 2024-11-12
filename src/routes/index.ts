@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store/authStore";
 import homePageRoutes from "./homePageRoutes";
+import adminPageRoutes from "./adminPageRoutes";
 import ROUTES from "./routes";
 
 export const router = createRouter({
@@ -37,6 +38,7 @@ export const router = createRouter({
       name: "admin-panel",
       component: () => import("../pages/admin/admin-page.vue"),
       meta: { requiresAdmin: true },
+      children: adminPageRoutes,
     },
   ],
 });
@@ -47,6 +49,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !authStore.isAuthorizated) {
     return next(ROUTES.auth);
   }
+
   if (to.meta.requiresAdmin && authStore.userRole !== "admin") {
     return next(ROUTES.auth);
   }

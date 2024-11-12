@@ -2,13 +2,14 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 import { router } from "../routes";
+import { setAuthData } from "./utils/setAuthData";
 
 export const useAuthStore = defineStore("auth", () => {
   const email = ref<string>("");
   const password = ref<string>("");
-  const userToken = ref<string | null>("");
+  const userToken = ref<string>("");
   const isAuthorizated = ref<boolean>(false);
-  const userRole = ref<string | null>(null);
+  const userRole = ref<string>("");
 
   const register = async (roleName: string) => {
     try {
@@ -40,9 +41,9 @@ export const useAuthStore = defineStore("auth", () => {
         payload
       );
       userToken.value = response.data.accessToken;
-      localStorage.setItem("token", response.data.accessToken);
-
+      userRole.value = response.data.roleId;
       isAuthorizated.value = true;
+      setAuthData(response.data.accessToken, response.data.roleId);
     } catch (err) {
       console.log(err);
     }
@@ -61,7 +62,8 @@ export const useAuthStore = defineStore("auth", () => {
       if (response.data.role === "admin") {
         userRole.value = response.data.role;
         userToken.value = response.data.accessToken;
-        localStorage.setItem("token", response.data.accessToken);
+        isAuthorizated.value = true;
+        setAuthData(userToken.value, userRole.value);
         router.push("/admin-panel");
       } else {
         console.log("You are not admin");
@@ -75,8 +77,10 @@ export const useAuthStore = defineStore("auth", () => {
   const signOut = async () => {
     try {
       if (userToken) {
-        userToken.value = null;
+        userToken.value = "";
+        userRole.value = "";
         localStorage.removeItem("token");
+        localStorage.removeItem("role");
         isAuthorizated.value = false;
         router.push("/auth");
       } else {
