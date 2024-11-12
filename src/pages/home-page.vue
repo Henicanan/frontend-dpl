@@ -14,10 +14,7 @@ const { isOpen, toggleDrawer } = useDrawer();
     <Drawer :isOpen="isOpen" @toggleDrawer="toggleDrawer" />
 
     <div :class="['content', { 'content-open': isOpen }]">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
-      dignissimos in nulla at voluptates velit quae, voluptas excepturi non
-      dicta et illo, doloremque necessitatibus molestias esse possimus culpa,
-      cumque ullam!
+      <RouterView />
     </div>
   </div>
 </template>
@@ -31,12 +28,11 @@ const { isOpen, toggleDrawer } = useDrawer();
 .content {
   transition: margin-left 0.5s ease;
   flex-grow: 1;
-
   padding-left: 60px;
 }
 
 .content-open {
-  margin-left: 200px;
+  margin-left: 180px;
 }
 
 .menu-toggle-btn {

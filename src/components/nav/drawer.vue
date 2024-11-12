@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
+import { useAuthStore } from "../../store/authStore";
+
+const authStore = useAuthStore();
 
 const props = defineProps({
   isOpen: {
@@ -17,11 +20,16 @@ const emit = defineEmits(["toggleDrawer"]);
       <button class="close-btn" @click="emit('toggleDrawer')">×</button>
       <nav class="menu">
         <ul>
-          <li><a>Главная</a></li>
-          <li><a>Курсы</a></li>
-          <li><a>Профиль</a></li>
-          <li><a>Настройки</a></li>
+          <li><a @click="$router.push('/main-page')">Главная</a></li>
+          <li><a @click="$router.push('/profile')">Профиль</a></li>
+          <li><a @click="$router.push('/matrix')">Matrix</a></li>
+          <li><a @click="$router.push('/courses')">Курсы</a></li>
+          <li><a @click="$router.push('/settings')">Настройки</a></li>
         </ul>
+
+        <button>
+          <a @click="authStore.signOut">Выйти</a>
+        </button>
       </nav>
     </div>
   </transition>

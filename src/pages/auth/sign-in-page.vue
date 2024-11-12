@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { router } from "../../routes";
 import { useAuthStore } from "../../store/authStore";
 
 const authStore = useAuthStore();
@@ -6,6 +7,9 @@ const authStore = useAuthStore();
 const handleLogin = async () => {
   try {
     await authStore.login();
+    if (authStore.isAuthorizated) {
+      router.push("/main-page");
+    }
   } catch (err) {
     console.log(err);
   }
