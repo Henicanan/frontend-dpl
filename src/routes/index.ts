@@ -1,39 +1,55 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store/authStore";
 import homePageRoutes from "./homePageRoutes";
+import ROUTES from "./routes";
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "/auth",
+      redirect: ROUTES.auth,
     },
     {
-      path: "/auth",
+      path: ROUTES.auth,
       name: "auth",
       component: () => import("../pages/auth/sign-in-page.vue"),
     },
     {
-      path: "/registration",
+      path: ROUTES.registration,
       name: "registration",
       component: () => import("../pages/auth/registration-page.vue"),
     },
     {
-      path: "/home-page",
+      path: ROUTES.homePage,
       name: "home-page",
       component: () => import("../pages/home-page.vue"),
       meta: { requiresAuth: true },
       children: homePageRoutes,
+    },
+    {
+      path: ROUTES.authAdmin,
+      name: "auth-admin",
+      component: () => import("../pages/admin/auth-admin.vue"),
+    },
+    {
+      path: ROUTES.adminPanel,
+      name: "admin-panel",
+      component: () => import("../pages/admin/admin-page.vue"),
+      meta: { requiresAdmin: true },
     },
   ],
 });
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+
   if (to.meta.requiresAuth && !authStore.isAuthorizated) {
-    next("/auth");
-  } else {
-    next();
+    return next(ROUTES.auth);
   }
+  if (to.meta.requiresAdmin && authStore.userRole !== "admin") {
+    return next(ROUTES.auth);
+  }
+
+  next();
 });

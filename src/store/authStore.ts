@@ -8,6 +8,7 @@ export const useAuthStore = defineStore("auth", () => {
   const password = ref<string>("");
   const userToken = ref<string | null>("");
   const isAuthorizated = ref<boolean>(false);
+  const userRole = ref<string | null>(null);
 
   const register = async (roleName: string) => {
     try {
@@ -17,10 +18,11 @@ export const useAuthStore = defineStore("auth", () => {
         roleName: roleName,
       };
       const response = await axios.post(
-        `http://localhost:${import.meta.env.PORT}/api/auth/register`,
+        `http://localhost:3000/api/auth/register`,
         payload
       );
       userToken.value = response.data.accessToken;
+      userRole.value = response.data.roleId;
       localStorage.setItem("token", response.data.accessToken);
     } catch (err) {
       console.log(err);
@@ -39,9 +41,34 @@ export const useAuthStore = defineStore("auth", () => {
       );
       userToken.value = response.data.accessToken;
       localStorage.setItem("token", response.data.accessToken);
+
       isAuthorizated.value = true;
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const loginAdmin = async () => {
+    try {
+      const payload = {
+        email: email.value,
+        password: password.value,
+      };
+      const response = await axios.post(
+        `http://localhost:3000/api/auth/login`,
+        payload
+      );
+      if (response.data.role === "admin") {
+        userRole.value = response.data.role;
+        userToken.value = response.data.accessToken;
+        localStorage.setItem("token", response.data.accessToken);
+        router.push("/admin-panel");
+      } else {
+        console.log("You are not admin");
+        router.push("/auth");
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -64,9 +91,11 @@ export const useAuthStore = defineStore("auth", () => {
     email,
     password,
     userToken,
+    userRole,
     isAuthorizated,
     login,
     register,
     signOut,
+    loginAdmin,
   };
 });
