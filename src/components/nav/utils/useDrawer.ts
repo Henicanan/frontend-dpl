@@ -3,9 +3,9 @@ import { ref } from "vue";
 export function useDrawer() {
   const isOpen = ref<boolean>(false);
 
-  function toggleDrawer() {
+  const toggleDrawer = async () => {
     isOpen.value = !isOpen.value;
-  }
+  };
 
   return { isOpen, toggleDrawer };
 }

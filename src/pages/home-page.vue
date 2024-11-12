@@ -26,7 +26,7 @@ const { isOpen, toggleDrawer } = useDrawer();
 }
 
 .content {
-  transition: margin-left 0.5s ease;
+  transition: margin-left 1.5s ease;
   flex-grow: 1;
   padding-left: 60px;
 }
@@ -37,7 +37,6 @@ const { isOpen, toggleDrawer } = useDrawer();
 
 .menu-toggle-btn {
   position: absolute;
-
   padding: 10px 15px;
   background-color: #3b82f6;
   color: white;

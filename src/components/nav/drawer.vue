@@ -40,7 +40,7 @@ const emit = defineEmits(["toggleDrawer"]);
   position: fixed;
   top: 0;
   left: 0;
-  width: 200px;
+  width: 160px;
   height: 100%;
   background-color: #3b82f6;
   color: white;
@@ -88,9 +88,11 @@ const emit = defineEmits(["toggleDrawer"]);
   cursor: pointer;
 }
 
-.slide-enter-active,
+.slide-enter-active {
+  transition: transform 1.5s ease;
+}
 .slide-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 1.5s ease;
 }
 .slide-enter {
   transform: translateX(-100%);

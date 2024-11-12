@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store/authStore";
+import homePageRoutes from "./homePageRoutes";
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,32 +20,11 @@ export const router = createRouter({
       component: () => import("../pages/auth/registration-page.vue"),
     },
     {
-      path: "/main-page",
-      name: "main-page",
+      path: "/home-page",
+      name: "home-page",
       component: () => import("../pages/home-page.vue"),
       meta: { requiresAuth: true },
-      children: [
-        {
-          path: "/courses",
-          name: "courses",
-          component: () => import("../pages/courses/courses-page.vue"),
-        },
-        {
-          path: "/profile",
-          name: "profile",
-          component: () => import("../pages/profile/profile.vue"),
-        },
-        {
-          path: "/settings",
-          name: "settings",
-          component: () => import("../pages/settings/settings.vue"),
-        },
-        {
-          path: "/matrix",
-          name: "matrix",
-          component: () => import("../pages/matrix/matrix-page.vue"),
-        },
-      ],
+      children: homePageRoutes,
     },
   ],
 });

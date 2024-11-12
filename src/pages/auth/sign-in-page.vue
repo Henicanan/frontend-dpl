@@ -8,7 +8,7 @@ const handleLogin = async () => {
   try {
     await authStore.login();
     if (authStore.isAuthorizated) {
-      router.push("/main-page");
+      router.push("/home-page");
     }
   } catch (err) {
     console.log(err);
