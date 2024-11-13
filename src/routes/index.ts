@@ -26,7 +26,13 @@ export const router = createRouter({
       name: "home-page",
       component: () => import("../pages/home-page.vue"),
       meta: { requiresAuth: true },
-      children: homePageRoutes,
+      children: [
+        {
+          path: "",
+          redirect: "/main-page",
+        },
+        ...homePageRoutes,
+      ],
     },
     {
       path: ROUTES.authAdmin,
@@ -51,7 +57,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.meta.requiresAdmin && authStore.userRole !== "admin") {
-    return next(ROUTES.auth);
+    return next(ROUTES.authAdmin);
   }
 
   next();

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "axios";
 import { router } from "../routes";
 import { setAuthData } from "./utils/setAuthData";
@@ -7,9 +7,9 @@ import { setAuthData } from "./utils/setAuthData";
 export const useAuthStore = defineStore("auth", () => {
   const email = ref<string>("");
   const password = ref<string>("");
-  const userToken = ref<string>("");
-  const isAuthorizated = ref<boolean>(false);
-  const userRole = ref<string>("");
+  const userToken = ref<string>(localStorage.getItem("token") || "");
+  const isAuthorizated = computed(() => userToken.value);
+  const userRole = ref<string>(localStorage.getItem("role") || "");
 
   const register = async (roleName: string) => {
     try {
@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("auth", () => {
       );
       userToken.value = response.data.accessToken;
       userRole.value = response.data.roleId;
-      isAuthorizated.value = true;
+      localStorage.setItem("isAuthorizated", isAuthorizated.value);
       setAuthData(response.data.accessToken, response.data.roleId);
     } catch (err) {
       console.log(err);
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore("auth", () => {
       if (response.data.role === "admin") {
         userRole.value = response.data.role;
         userToken.value = response.data.accessToken;
-        isAuthorizated.value = true;
+        localStorage.setItem("isAuthorizated", isAuthorizated.value);
         setAuthData(userToken.value, userRole.value);
         router.push("/admin-panel");
       } else {
@@ -71,6 +71,8 @@ export const useAuthStore = defineStore("auth", () => {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      console.log(isAuthorizated.value);
     }
   };
 
@@ -81,7 +83,7 @@ export const useAuthStore = defineStore("auth", () => {
         userRole.value = "";
         localStorage.removeItem("token");
         localStorage.removeItem("role");
-        isAuthorizated.value = false;
+        localStorage.removeItem("isAuthorizated");
         router.push("/auth");
       } else {
         return;
