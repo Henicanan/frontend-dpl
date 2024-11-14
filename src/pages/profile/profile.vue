@@ -1,7 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
-  <div>Профиль</div>
+  <div>fsdfsd</div>
 </template>
-
-<style scoped lang="ssas"></style>

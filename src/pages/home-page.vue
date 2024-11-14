@@ -32,7 +32,7 @@ const { isOpen, toggleDrawer } = useDrawer();
 }
 
 .content-open {
-  margin-left: 180px;
+  margin-left: 100px;
 }
 
 .menu-toggle-btn {

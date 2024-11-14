@@ -66,7 +66,6 @@ export const useAuthStore = defineStore("auth", () => {
         setAuthData(userToken.value, userRole.value);
         router.push("/admin-panel");
       } else {
-        console.log("You are not admin");
         router.push("/auth");
       }
     } catch (err) {
