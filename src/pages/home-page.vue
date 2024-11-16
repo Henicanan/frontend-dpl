@@ -38,7 +38,7 @@ const { isOpen, toggleDrawer } = useDrawer();
 .menu-toggle-btn {
   position: absolute;
   padding: 10px 15px;
-  background-color: #3b82f6;
+  background-color: $blue-color;
   color: white;
   border: none;
   font-size: 16px;
@@ -47,6 +47,6 @@ const { isOpen, toggleDrawer } = useDrawer();
 }
 
 .menu-toggle-btn:hover {
-  background-color: #2c68c1;
+  background-color: $blue-color;
 }
 </style>

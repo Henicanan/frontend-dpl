@@ -28,13 +28,13 @@ export const testimonials = ref([
 
 export const instructors = ref([
   {
-    name: "Артем Безносво",
+    name: "Артем Безносов",
     expertise: "Frontend-разработка, Vue.js",
     photo: artyomPhoto,
   },
   {
     name: "Леон Горецка",
-    expertise: "Backend-разработка, Node.js",
+    expertise: "Backend-разработка, NestJS",
     photo: leonPhoto,
   },
 ]);

@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { ref } from "vue";
+
+const menuItems = ref([
+  {
+    label: "Панель управления",
+    to: "/admin-panel/dashboard",
+  },
+  { label: "Модераторы", to: "/admin-panel/moderators" },
+  { label: "Ученики", to: "/admin-panel/students" },
+]);
+</script>
+
 <template>
   <div class="admin-page">
     <aside class="admin-sidebar">
@@ -23,21 +36,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-
-const menuItems = ref([
-  {
-    label: "Панель управления",
-    to: "/admin-panel/dashboard",
-  },
-  { label: "Модераторы", to: "/admin-panel/moderators" },
-  { label: "Ученики", to: "/admin-panel/students" },
-]);
-</script>
-
 <style scoped lang="scss">
-$blue-color: #007bff;
+$blue-color: $blue-color;
 $sidebar-bg: #f8f9fa;
 $sidebar-width: 200px;
 
