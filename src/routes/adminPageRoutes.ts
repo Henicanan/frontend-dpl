@@ -4,7 +4,6 @@ export default [
     name: "admin-dashboard",
     component: () =>
       import("../pages/admin/components/dashboard/dashboard.vue"),
-    children: [],
   },
   {
     path: "moderators",
@@ -19,10 +18,13 @@ export default [
   },
   {
     path: "courses",
-    name: "admin-courses",
-    component: () =>
-      import("../pages/admin/components/dashboard/courses/courses.vue"),
     children: [
+      {
+        path: "",
+        name: "admin-courses",
+        component: () =>
+          import("../pages/admin/components/dashboard/courses/courses.vue"),
+      },
       {
         path: "create",
         name: "admin-create-course",
