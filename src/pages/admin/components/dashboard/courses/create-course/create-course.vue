@@ -19,6 +19,7 @@ const addLesson = (moduleIndex: number) => {
     id: Date.now(),
     title: "",
     content: "",
+    videoUrl: "",
   });
 };
 
@@ -91,6 +92,16 @@ const submitCourse = async () => {
               v-model="lesson.content"
               placeholder="Введите содержимое урока"
             ></textarea>
+          </label>
+        </div>
+        <div>
+          <label>
+            Ссылка на видео:
+            <input
+              type="text"
+              v-model="lesson.videoUrl"
+              placeholder="Введите название урока"
+            />
           </label>
         </div>
       </div>
