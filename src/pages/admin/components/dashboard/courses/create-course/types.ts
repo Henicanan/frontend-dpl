@@ -1,12 +1,12 @@
 export interface Lesson {
-  id: number;
+  id: string;
   title: string;
   content: string;
   videoUrl: string;
 }
 
 export interface Module {
-  id: number;
+  id: string;
   title: string;
   lessons: Lesson[];
 }

@@ -2,13 +2,14 @@
 import { ref } from "vue";
 import axios from "axios";
 import type { Module } from "./types";
+import { v4 as uuidv4 } from "uuid";
 
 const modules = ref<Module[]>([]);
 const courseName = ref("");
 
 const addModule = () => {
   modules.value.push({
-    id: Date.now(),
+    id: uuidv4(),
     title: "",
     lessons: [],
   });
@@ -16,7 +17,7 @@ const addModule = () => {
 
 const addLesson = (moduleIndex: number) => {
   modules.value[moduleIndex].lessons.push({
-    id: Date.now(),
+    id: uuidv4(),
     title: "",
     content: "",
     videoUrl: "",
@@ -27,10 +28,10 @@ const submitCourse = async () => {
   console.log(modules.value);
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/curse/create",
+      "http://localhost:3000/api/course/create-course",
       {
+        title: courseName.value,
         modules: modules.value,
-        courseName: courseName.value,
       }
     );
     console.log("Курс успешно сохранен", response.data);
