@@ -10,3 +10,12 @@ export interface Module {
   title: string;
   lessons: Lesson[];
 }
+
+export interface Course {
+  id: number;
+  title: string;
+}
+
+export interface CourseResponse {
+  courses: Course[];
+}

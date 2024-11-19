@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
-import type { Module } from "./types";
+import type { Module } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 const modules = ref<Module[]>([]);

@@ -35,7 +35,7 @@ export default [
       },
       {
         path: ":id",
-        name: "admin-course-details",
+        name: "course-details",
         component: () =>
           import(
             "../pages/admin/components/dashboard/courses/course-details/course-details.vue"

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "lodash": "^4.17.21",
     "pinia": "^2.2.6",
     "uuid": "^11.0.3",
     "vue": "^3.5.12",
@@ -17,6 +18,7 @@
     "vue3-calendar-heatmap": "^2.0.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.13",
     "@vitejs/plugin-vue": "^5.1.4",
     "sass": "^1.80.6",
     "typescript": "~5.6.2",
