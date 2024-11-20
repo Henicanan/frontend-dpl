@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import type { Course, CourseResponse } from "./types";
 import trashIcon from "../../../../../components/icons/trash-icon.vue";
 import circleSpinner from "../../../../../components/spinner/circle-spinner.vue";
+import settingsAdjustment from "../../../../../components/icons/settings-adjustment.vue";
 
 import axios from "axios";
 
@@ -33,6 +34,18 @@ const fetchCourses = async () => {
     setTimeout(() => {
       loading.value = false;
     }, 500);
+  }
+};
+
+const deleteCourse = async (courseId: number) => {
+  try {
+    await axios.delete(
+      `http://localhost:3000/api/course/delete-course/${courseId}`
+    );
+    fetchCourses();
+    console.log("Курс успешно удален");
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -76,16 +89,23 @@ onMounted(() => {
         class="course-item"
         v-for="course in courses"
         :key="course.id"
-        @click="goToCourse(course.id)"
       >
-        <div class="course-item-title">{{ course.title }}</div>
-        <trashIcon class="trash-icon" />
+        <div class="course-item-title" @click="goToCourse(course.id)">
+          {{ course.title }}
+        </div>
+        <div class="icon-group">
+          <settingsAdjustment
+            class="settings-icon"
+            @click="goToCourse(course.id)"
+          />
+          <trashIcon @click="deleteCourse(course.id)" class="trash-icon" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .courses {
   display: flex;
   flex-direction: column;
@@ -123,23 +143,31 @@ onMounted(() => {
   color: white;
   border-radius: 4px;
 
-  text-align: center;
   width: 26rem;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .course-item-title {
   cursor: pointer;
+  flex: 1;
 }
 
-.trash-icon {
+.icon-group {
+  display: flex;
+  gap: 10px;
+}
+
+.trash-icon,
+.settings-icon {
   cursor: pointer;
   color: white;
-  margin-left: auto;
 }
 
 .trash-icon:hover,
-.course-item-title:hover {
+.course-item-title:hover,
+.settings-icon:hover {
   color: #c7c6c6;
 }
 
