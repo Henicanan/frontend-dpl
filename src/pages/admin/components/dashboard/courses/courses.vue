@@ -1,53 +1,17 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { onMounted, watch } from "vue";
 import debounce from "lodash/debounce";
 import { useRouter } from "vue-router";
-import type { Course, CourseResponse } from "./types";
+
 import trashIcon from "../../../../../components/icons/trash-icon.vue";
 import circleSpinner from "../../../../../components/spinner/circle-spinner.vue";
 import settingsAdjustment from "../../../../../components/icons/settings-adjustment.vue";
+import { useCourse } from "./composables/useCourse";
 
-import axios from "axios";
+const { fetchCourses, deleteCourse, inputSearchCourse, loading, courses } =
+  useCourse();
 
 const router = useRouter();
-
-const courses = ref<Course[]>([]);
-const inputSearchCourse = ref<string>("");
-const loading = ref<boolean>(false);
-
-const fetchCourses = async () => {
-  loading.value = true;
-  try {
-    const response = await axios.get<CourseResponse>(
-      "http://localhost:3000/api/course/get-all-courses",
-      {
-        params: {
-          search: inputSearchCourse.value,
-        },
-      }
-    );
-    courses.value = response.data.courses;
-    console.log(courses.value);
-  } catch (error) {
-    console.error("Ошибка при получении курсов:", error);
-  } finally {
-    setTimeout(() => {
-      loading.value = false;
-    }, 500);
-  }
-};
-
-const deleteCourse = async (courseId: number) => {
-  try {
-    await axios.delete(
-      `http://localhost:3000/api/course/delete-course/${courseId}`
-    );
-    fetchCourses();
-    console.log("Курс успешно удален");
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 const createCourse = () => {
   router.push({ name: "admin-create-course" });
