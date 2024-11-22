@@ -38,7 +38,7 @@ export function useCourse() {
       await axios.delete(
         `http://localhost:3000/api/course/delete-course/${courseId}`
       );
-      await fetchCourses(); // Обновляем список курсов
+      await fetchCourses(); 
       console.log("Курс успешно удален");
     } catch (error) {
       console.error("Ошибка при удалении курса:", error);
