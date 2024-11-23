@@ -1,8 +1,13 @@
-export interface Block {
-  id: number;
-  title: string;
+export interface Document {
+  id: string;
+  name: string;
+  folderId: string;
+  content: string;
 }
 
-export interface BlockResponse {
-  blocks: Block[];
+export interface Folder {
+  id: string;
+  title: string;
+  items: Document[];
+  subfolders: Folder[];
 }
