@@ -3,6 +3,8 @@ import { ref } from "vue";
 import test from "./tests/test.vue";
 import materials from "./materials/materials.vue";
 import courses from "./courses/courses.vue";
+import type { Tab } from "./materials/types/tab";
+import { tabs } from "./materials/constants/tabs";
 
 const activeTab = ref<"courses" | "tests" | "materials">("courses");
 
@@ -10,18 +12,14 @@ const switchTab = (tab: "courses" | "tests" | "materials") => {
   activeTab.value = tab;
 };
 
-const tabs: { name: "courses" | "tests" | "materials"; label: string }[] = [
-  { name: "courses", label: "Курсы" },
-  { name: "tests", label: "Тесты" },
-  { name: "materials", label: "Материалы" },
-];
+const tabsItem: Tab[] = tabs;
 </script>
 
 <template>
   <div class="dashboard">
     <div class="tab-switcher">
       <button
-        v-for="tab in tabs"
+        v-for="tab in tabsItem"
         :key="tab.name"
         :class="{ active: activeTab === tab.name }"
         @click="switchTab(tab.name)"
