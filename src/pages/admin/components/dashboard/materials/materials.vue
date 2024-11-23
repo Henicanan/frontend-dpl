@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import UploadBtn from "../../../../../components/button/upload-btn.vue";
 
 const isShowInput = ref<boolean>(false);
 
@@ -14,12 +15,15 @@ const showInputCreateMaterial = () => {
       <button @click="showInputCreateMaterial" class="add-materials-btn">
         Добавить блок
       </button>
-      <input
-        class="input-create-material"
-        type="text"
-        v-if="isShowInput"
-        placeholder="Введите название блока"
-      />
+      <div v-if="isShowInput">
+        <UploadBtn />
+        <input
+          class="input-create-material"
+          type="text"
+          placeholder="Введите название блока"
+        />
+        <button class="save-materials-btn">Сохранить</button>
+      </div>
     </div>
   </div>
 </template>
@@ -50,11 +54,24 @@ const showInputCreateMaterial = () => {
     width: fit-content;
     padding: 5px;
     padding-left: 10px;
-    font-size: 18px;
+    font-size: 20px;
     height: 2rem;
     border: none;
     background: #f4f4f4;
     border-bottom: 1px solid black;
+  }
+
+  .save-materials-btn {
+    margin-top: 10px;
+    border: 2px solid $blue-color;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: none;
+    color: $blue-color;
+
+    &:hover {
+      background-color: #d1cfcf;
+    }
   }
 }
 </style>
