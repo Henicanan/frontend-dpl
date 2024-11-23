@@ -54,6 +54,40 @@ const addLesson = (moduleIndex: number) => {
   });
 };
 
+const removeModule = async (moduleIndex: number) => {
+  const moduleToRemove = modules.value[moduleIndex];
+  if (moduleToRemove.id) {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/course/delete-module/${moduleToRemove.id}`
+      );
+      modules.value.splice(moduleIndex, 1);
+      console.log("Модуль успешно удален", moduleToRemove);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    modules.value.splice(moduleIndex, 1);
+  }
+};
+
+const removeLesson = async (moduleIndex: number, lessonIndex: number) => {
+  const lessonToRemove = modules.value[moduleIndex].lessons[lessonIndex];
+  if (lessonToRemove.id) {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/course/delete-lesson/${lessonToRemove.id}`
+      );
+      modules.value[moduleIndex].lessons.splice(lessonIndex, 1);
+      console.log("Урок успешно удален", lessonToRemove);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    modules.value[moduleIndex].lessons.splice(lessonIndex, 1);
+  }
+};
+
 const submitCourse = async () => {
   try {
     const payload = {
@@ -116,7 +150,12 @@ onMounted(() => {
       :key="module.id"
       class="module"
     >
-      <h2>Модуль {{ moduleIndex + 1 }}</h2>
+      <h2>
+        Модуль {{ moduleIndex + 1 }}
+        <button @click="removeModule(moduleIndex)" class="remove-button">
+          Удалить модуль
+        </button>
+      </h2>
       <input v-model="module.title" placeholder="Введите название модуля" />
 
       <div
@@ -124,7 +163,15 @@ onMounted(() => {
         :key="lesson.id"
         class="lesson"
       >
-        <h3>Урок {{ lessonIndex + 1 }}</h3>
+        <h3>
+          Урок {{ lessonIndex + 1 }}
+          <button
+            @click="removeLesson(moduleIndex, lessonIndex)"
+            class="remove-button"
+          >
+            Удалить урок
+          </button>
+        </h3>
         <input v-model="lesson.title" placeholder="Название урока" />
         <textarea
           v-model="lesson.content"
@@ -158,6 +205,19 @@ onMounted(() => {
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
+}
+
+.remove-button {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background-color: #d9363e;
 }
 
 button {

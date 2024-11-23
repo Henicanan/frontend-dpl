@@ -22,8 +22,9 @@ export function useCourse() {
           },
         }
       );
+
       courses.value = response.data.courses;
-      console.log("Курсы загружены:", courses.value);
+      console.log(courses.value);
     } catch (error) {
       console.error("Ошибка при получении курсов:", error);
     } finally {
@@ -38,7 +39,7 @@ export function useCourse() {
       await axios.delete(
         `http://localhost:3000/api/course/delete-course/${courseId}`
       );
-      await fetchCourses(); 
+      await fetchCourses();
       console.log("Курс успешно удален");
     } catch (error) {
       console.error("Ошибка при удалении курса:", error);

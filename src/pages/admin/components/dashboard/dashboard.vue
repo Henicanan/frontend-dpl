@@ -70,7 +70,8 @@ const tabs: { name: "courses" | "tests" | "materials"; label: string }[] = [
       }
 
       &:hover {
-        background-color: #e0e0e0;
+        background-color: $blue-color;
+        color: #c7c7c7;
       }
     }
   }
