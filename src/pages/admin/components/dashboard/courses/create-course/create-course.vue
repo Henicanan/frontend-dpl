@@ -85,8 +85,8 @@ const { modules, courseName, addModule, addLesson, submitCourse } = useCourse();
 
 <style scoped lang="scss">
 .course-constructor {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1000px;
+
   font-family: Arial, sans-serif;
 }
 

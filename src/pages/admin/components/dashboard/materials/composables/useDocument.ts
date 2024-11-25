@@ -1,43 +1,109 @@
 import { ref } from "vue";
-import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import { useFolder } from "./useFolder";
-
-const { folders, findFolderById } = useFolder();
+import type { Document } from "../types/document";
 
 export function useDocument() {
+  const loading = ref<boolean>(false);
   const documentName = ref<string>("");
+  const documents = ref<Document[]>([]);
+  const deletedDocumentIds = ref<Set<string>>(new Set());
+  let autoSaveInterval: ReturnType<typeof setInterval> | null = null;
 
-  const createDocument = async (folderId: string) => {
-    const newDocument = {
-      id: uuidv4(),
-      name: documentName.value || "Новый документ",
-      folderId: folderId,
-      content: "",
-    };
-
+  const createDocument = async () => {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/material/create-document",
         {
-          title: newDocument.name,
-          name: newDocument.content,
-          folderId: newDocument.folderId,
+          title: documentName.value.trim() || "Новый документ",
+          content: "",
         }
       );
-      if (response.status === 200) {
-        if (folderId) {
-          const folder = findFolderById(folderId, folders.value);
-          if (folder) {
-            folder.items.push(newDocument);
-          }
-        }
-        documentName.value = "";
-      }
+      documentName.value = "";
+      console.log(response.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  return { documentName, createDocument };
+  const getAllDocument = async () => {
+    loading.value = true;
+    setTimeout(async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/material/get-all-documents`
+        );
+        documents.value = response.data;
+        console.log(documents.value);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        loading.value = false;
+      }
+    }, 5000);
+  };
+
+  const getDocumentById = async (id: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/material/get-document/${id}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const updateDocument = async (id: string, content: string) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/material/update-document/${id}`,
+        {
+          content,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteDocument = async (id: string) => {
+    try {
+      await axios.patch(
+        `http://localhost:3000/api/material/delete-document/${id}`
+      );
+      deletedDocumentIds.value.add(id);
+      getAllDocument();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const startAutoSave = (id: string, content: string) => {
+    autoSaveInterval = setInterval(async () => {
+      await updateDocument(id, content);
+    }, 10000);
+  };
+
+  const stopAutoSave = () => {
+    if (autoSaveInterval) {
+      clearInterval(autoSaveInterval);
+      autoSaveInterval = null;
+    }
+  };
+
+  return {
+    documentName,
+    createDocument,
+    getAllDocument,
+    updateDocument,
+    documents,
+    stopAutoSave,
+    autoSaveInterval,
+    deleteDocument,
+    deletedDocumentIds,
+    getDocumentById,
+    startAutoSave,
+    loading,
+  };
 }

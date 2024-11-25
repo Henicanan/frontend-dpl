@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import test from "./tests/test.vue";
+
 import materials from "./materials/materials.vue";
 import courses from "./courses/courses.vue";
 import type { Tab } from "./materials/types/tab";

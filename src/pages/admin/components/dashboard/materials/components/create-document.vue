@@ -1,41 +1,27 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useDocument } from "../composables/useDocument";
-import PlusIcon from "../../../../../../components/icons/plus-icon.vue";
-import UploadButton from "../../../../../../components/icons/check-line.vue";
+import PlusIcon from "@/components/icons/plus-icon.vue";
+import UploadButton from "@/components/icons/check-line.vue";
 
 const { documentName, createDocument } = useDocument();
-
-const props = defineProps({
-  folderName: String,
-  folderId: String,
-});
 
 const isShowInput = ref<boolean>(false);
 
 const showInputCreateDocument = () => {
   isShowInput.value = !isShowInput.value;
 };
-
-const handleCreateDocument = async () => {
-  if (props.folderId) {
-    await createDocument(props.folderId);
-  } else {
-    console.log("Ошибочка");
-  }
-};
 </script>
 
 <template>
-  <div>{{ props.folderName }}</div>
-  <div class="document-list-wrapper">
+  <div class="document-create-wrapper">
     <div class="create-document">
       <button @click="showInputCreateDocument" class="create-document-btn">
         <PlusIcon class="plus-icon" /> Создать документ
       </button>
       <div v-if="isShowInput" class="input-wrapper">
-        <input class="input-create-document" v-module="documentName" />
-        <UploadButton @click="handleCreateDocument" class="upload-btn" />
+        <input class="input-create-document" v-model="documentName" />
+        <UploadButton @click="createDocument" class="upload-btn" />
       </div>
     </div>
   </div>

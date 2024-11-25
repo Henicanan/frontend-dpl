@@ -1,47 +1,34 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import CreateMaterials from "./components/create-materials.vue";
-import MaterialFolderList from "./components/material-folder-item.vue";
-import MaterailDocumentItem from "./components/materail-document-item.vue";
-import { useFolder } from "./composables/useFolder";
+import { onMounted } from "vue";
+import CreateDocument from "./components/create-document.vue";
+import DocumentItem from "@/pages/admin/components/dashboard/materials/components/document-item.vue";
+import { useDocument } from "./composables/useDocument";
+import CircleSpinner from "@/components/spinner/circle-spinner.vue";
 
-const { folders, getAllFolders } = useFolder();
-
-const selectedIdFolder = ref<string>("");
-const selectedNameFolder = ref<string>("");
-
-const handleFolderOpen = (folderId: string, folderName: string) => {
-  selectedIdFolder.value = folderId;
-  selectedNameFolder.value = folderName;
-};
+const { getAllDocument, documents, loading } = useDocument();
 
 onMounted(() => {
-  getAllFolders();
+  getAllDocument();
 });
 </script>
 
 <template>
   <div class="materials">
-    <div v-if="!selectedIdFolder">
+    <div>
       <div class="create-block">
-        <CreateMaterials />
+        <CreateDocument />
+      </div>
+      <div v-if="loading" class="loading-spinner">
+        <CircleSpinner />
       </div>
       <div class="materials-list">
-        <MaterialFolderList
-          v-for="folder in folders"
-          :key="folder.id"
-          :folderName="folder.title"
-          :folderId="folder.id"
-          :required="true"
-          @click="handleFolderOpen(folder.id, folder.title)"
+        <DocumentItem
+          v-for="document in documents"
+          :key="document.id"
+          :title="document.title"
+          :id="document.id"
         />
       </div>
-    </div>
-    <div v-else class="document-list">
-      <MaterailDocumentItem
-        :folderName="selectedNameFolder"
-        :folderId="selectedIdFolder"
-      />
     </div>
   </div>
 </template>
@@ -53,6 +40,13 @@ onMounted(() => {
 
   .create-block {
     margin-bottom: 20px;
+  }
+
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
   }
 
   .materials-list {

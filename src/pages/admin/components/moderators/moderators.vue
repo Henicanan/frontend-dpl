@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
 import { useStudents } from "./composables/useModerators";
-import circleSpinner from "../../../../components/spinner/circle-spinner.vue";
+import circleSpinner from "@/components/spinner/circle-spinner.vue";
 import debounce from "lodash/debounce";
 
 const { fetchModerators, inputSearchModerator, loading, moderators } =

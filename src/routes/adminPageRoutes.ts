@@ -6,6 +6,14 @@ export default [
       import("../pages/admin/components/dashboard/dashboard.vue"),
   },
   {
+    path: "document/:id",
+    name: "admin-document",
+    component: () =>
+      import(
+        "../pages/admin/components/dashboard/materials/components/document.vue"
+      ),
+  },
+  {
     path: "moderators",
     name: "admin-moderators",
     component: () =>
