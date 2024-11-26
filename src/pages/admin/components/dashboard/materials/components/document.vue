@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useDocument } from "../composables/useDocument";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
+import debounce from "lodash/debounce";
+import { ToggleSwitch } from "primevue";
 
 import { editorOptions } from "../composables/editorsOptions";
 
-const { getDocumentById, startAutoSave, stopAutoSave } = useDocument();
+const { getDocumentById, updateDocument } = useDocument();
 const route = useRoute();
 
 const documentId = route.params.id as string;
@@ -18,33 +20,40 @@ const loadDocument = async () => {
   if (doc) {
     documentTitle.value = doc.title;
     documentContent.value = doc.content;
-    isAutoSave.value = false;
   }
 };
-watch(isAutoSave, (newValue) => {
-  if (newValue) {
-    startAutoSave(documentId, documentContent.value);
-  } else {
-    stopAutoSave();
+
+const handleSwitchAutoSave = () => {
+  isAutoSave.value = !isAutoSave.value;
+};
+
+const handleUpdateDocument = async (content: string) => {
+  if (!content.trim()) return;
+  try {
+    await updateDocument(documentId, content);
+  } catch (err) {
+    console.log(err);
   }
+};
+
+const debouncedUpdateDocument = debounce(handleUpdateDocument, 1000);
+
+watch(documentContent, (newContent: string) => {
+  debouncedUpdateDocument(newContent);
 });
 
 onMounted(() => {
   loadDocument();
-  startAutoSave(documentId, documentContent.value);
-});
-
-onBeforeMount(() => {
-  stopAutoSave();
 });
 </script>
 
 <template>
   <div>
+    {{ isAutoSave }}
     <div class="autosave-wrapper">
       <span class="autosave-title">Автосохранение...</span>
+      <ToggleSwitch v-model="isAutoSave" />
     </div>
-
     <h1 class="title">
       Редактировать документ :
       <span class="document-title">{{ documentTitle }}</span>

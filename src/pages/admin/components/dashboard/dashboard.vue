@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
 import materials from "./materials/materials.vue";
 import courses from "./courses/courses.vue";
 import type { Tab } from "./materials/types/tab";
 import { tabs } from "./materials/constants/tabs";
+import Test from "./test/test.vue";
 
 const activeTab = ref<"courses" | "tests" | "materials">("courses");
 

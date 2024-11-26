@@ -7,7 +7,6 @@ export function useDocument() {
   const documentName = ref<string>("");
   const documents = ref<Document[]>([]);
   const deletedDocumentIds = ref<Set<string>>(new Set());
-  let autoSaveInterval: ReturnType<typeof setInterval> | null = null;
 
   const createDocument = async () => {
     try {
@@ -79,31 +78,15 @@ export function useDocument() {
     }
   };
 
-  const startAutoSave = (id: string, content: string) => {
-    autoSaveInterval = setInterval(async () => {
-      await updateDocument(id, content);
-    }, 10000);
-  };
-
-  const stopAutoSave = () => {
-    if (autoSaveInterval) {
-      clearInterval(autoSaveInterval);
-      autoSaveInterval = null;
-    }
-  };
-
   return {
     documentName,
     createDocument,
     getAllDocument,
     updateDocument,
     documents,
-    stopAutoSave,
-    autoSaveInterval,
     deleteDocument,
     deletedDocumentIds,
     getDocumentById,
-    startAutoSave,
     loading,
   };
 }
