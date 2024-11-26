@@ -39,7 +39,9 @@ const handleUpdateDocument = async (content: string) => {
 const debouncedUpdateDocument = debounce(handleUpdateDocument, 1000);
 
 watch(documentContent, (newContent: string) => {
-  debouncedUpdateDocument(newContent);
+  if (isAutoSave.value) {
+    debouncedUpdateDocument(newContent);
+  }
 });
 
 onMounted(() => {
@@ -49,10 +51,10 @@ onMounted(() => {
 
 <template>
   <div>
-    {{ isAutoSave }}
     <div class="autosave-wrapper">
-      <span class="autosave-title">Автосохранение...</span>
-      <ToggleSwitch v-model="isAutoSave" />
+      <span>{{ isAutoSave ? "  Включено" : "  Выключено" }}</span>
+      <ToggleSwitch v-model="isAutoSave" @onChange="handleSwitchAutoSave" />
+      <span class="autosave-title" v-if="isAutoSave">Автосохранение... </span>
     </div>
     <h1 class="title">
       Редактировать документ :
