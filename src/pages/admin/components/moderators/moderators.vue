@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
-import { useStudents } from "./composables/useModerators";
+import { useModerators } from "./composables/useModerators";
 import circleSpinner from "@/components/spinner/circle-spinner.vue";
 import debounce from "lodash/debounce";
+import CreateModerator from "./components/create-moderator.vue";
 
 const { fetchModerators, inputSearchModerator, loading, moderators } =
-  useStudents();
+  useModerators();
 
 const debouncedFetchModerators = debounce(fetchModerators, 500);
 
@@ -19,7 +20,8 @@ onMounted(() => {
 
 <template>
   <div class="moderators">
-    <div class="input-wrapper">
+    <CreateModerator />
+    <div class="input-search-wrapper">
       <input
         v-model="inputSearchModerator"
         class="input-search-moderator"
@@ -41,3 +43,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.input-search-wrapper {
+  margin-top: 1rem;
+}
+</style>

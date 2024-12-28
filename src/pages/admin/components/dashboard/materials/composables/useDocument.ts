@@ -38,7 +38,7 @@ export function useDocument() {
       } finally {
         loading.value = false;
       }
-    }, 5000);
+    }, 500);
   };
 
   const getDocumentById = async (id: string) => {

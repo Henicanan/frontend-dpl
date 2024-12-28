@@ -3,9 +3,9 @@ import { onMounted, watch } from "vue";
 import debounce from "lodash/debounce";
 import { useRouter } from "vue-router";
 
-import trashIcon from "../../../../../components/icons/trash-icon.vue";
-import circleSpinner from "../../../../../components/spinner/circle-spinner.vue";
-import settingsAdjustment from "../../../../../components/icons/settings-adjustment.vue";
+import trashIcon from "@/components/icons/trash-icon.vue";
+import circleSpinner from "@/components/spinner/circle-spinner.vue";
+import settingsAdjustment from "@/components/icons/settings-adjustment.vue";
 import { useCourse } from "./composables/useCourse";
 
 const { fetchCourses, deleteCourse, inputSearchCourse, loading, courses } =
@@ -78,7 +78,7 @@ onMounted(() => {
 
 .create-course-btn {
   padding: 10px 16px;
-  background-color: #4caf50;
+  background-color: $green-color;
   color: white;
   border: none;
   border-radius: 4px;

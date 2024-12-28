@@ -4,4 +4,5 @@ export const tabs: Tab[] = [
   { name: "courses", label: "Курсы" },
   { name: "tests", label: "Тесты" },
   { name: "materials", label: "Материалы" },
+  { name: "videos", label: "Видео" },
 ];

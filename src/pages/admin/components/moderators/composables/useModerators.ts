@@ -2,7 +2,7 @@ import { ref } from "vue";
 import axios from "axios";
 import type { ModeratorResponse, Moderator } from "../types";
 
-export function useStudents() {
+export function useModerators() {
   const moderators = ref<Moderator[]>([]);
   const inputSearchModerator = ref<string>("");
   const loading = ref<boolean>(false);
@@ -30,7 +30,30 @@ export function useStudents() {
     }
   };
 
+  const createModerator = async (
+    roleName: string,
+    email: string,
+    password: string
+  ) => {
+    console.log(roleName, email, password);
+    try {
+      const payload = {
+        email: email,
+        password: password,
+        roleName: roleName,
+      };
+      const response = await axios.post(
+        `http://localhost:3000/api/auth/register`,
+        payload
+      );
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
+    createModerator,
     fetchModerators,
     inputSearchModerator,
     loading,

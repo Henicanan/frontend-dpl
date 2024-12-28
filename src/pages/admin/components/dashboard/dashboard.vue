@@ -2,13 +2,14 @@
 import { ref } from "vue";
 import materials from "./materials/materials.vue";
 import courses from "./courses/courses.vue";
-import type { Tab } from "./materials/types/tab";
-import { tabs } from "./materials/constants/tabs";
+import videosPage from "./videos/videos-page.vue";
+import type { Tab } from "./types/tab";
+import { tabs } from "./constants/tabs";
 import Test from "./test/test.vue";
 
-const activeTab = ref<"courses" | "tests" | "materials">("courses");
+const activeTab = ref<"courses" | "tests" | "materials" | "videos">("courses");
 
-const switchTab = (tab: "courses" | "tests" | "materials") => {
+const switchTab = (tab: "courses" | "tests" | "materials" | "videos") => {
   activeTab.value = tab;
 };
 
@@ -37,6 +38,9 @@ const tabsItem: Tab[] = tabs;
       </div>
       <div v-if="activeTab === 'materials'">
         <materials />
+      </div>
+      <div v-if="activeTab === 'videos'">
+        <videosPage />
       </div>
     </div>
   </div>
